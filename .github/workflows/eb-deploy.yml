@@ -16,8 +16,14 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
       
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+      
       - name: Build JAR
         run: ./gradlew clean bootJar
+      
+      - name: Rename JAR
+        run: mv build/libs/*.jar build/libs/application.jar
       
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
@@ -26,6 +32,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: Library-BackEnd
           environment_name: Library-BackEnd-env
-          version_label: ${{ github.run_number }}
+          version_label: v-${{ github.run_number }}
           region: ap-northeast-2
-          deployment_package: build/libs/Library-BackEnd.jar
+          deployment_package: build/libs/application.jar
