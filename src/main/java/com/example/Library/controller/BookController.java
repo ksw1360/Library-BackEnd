@@ -46,4 +46,11 @@ public class BookController {
     public ResponseEntity<BookResponseDto> addBook(@RequestBody Book book) {
         return ResponseEntity.ok(bookService.addBook(book));
     }
+
+    // 반납
+    @PatchMapping("/books/{id}/return")
+    public ResponseEntity<Void> returnBook(@PathVariable Long id) {
+        bookService.returnBook(id);
+        return ResponseEntity.ok().build();
+    }
 }

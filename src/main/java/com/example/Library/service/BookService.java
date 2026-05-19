@@ -54,4 +54,12 @@ public class BookService {
     public BookResponseDto addBook(Book book) {
         return BookResponseDto.from(bookRepository.save(book));
     }
+
+    // 반납
+    public void returnBook(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("책을 찾을 수 없습니다"));
+        book.setAvailable(true);
+        bookRepository.save(book);
+    }
 }
