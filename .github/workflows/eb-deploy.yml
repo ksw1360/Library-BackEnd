@@ -35,3 +35,4 @@ jobs:
           version_label: v-${{ github.run_number }}
           region: ap-northeast-2
           deployment_package: build/libs/application.jar
+          wait_for_deployment: false   # ⭐ 이거 추가!
