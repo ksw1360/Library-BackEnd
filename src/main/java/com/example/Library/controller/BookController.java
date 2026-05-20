@@ -1,6 +1,7 @@
 package com.example.Library.controller;
 
 import com.example.Library.dto.BookResponseDto;
+import com.example.Library.dto.BookUpdateRequestDto;
 import com.example.Library.entity.Book;
 import com.example.Library.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +53,11 @@ public class BookController {
     public ResponseEntity<Void> returnBook(@PathVariable Long id) {
         bookService.returnBook(id);
         return ResponseEntity.ok().build();
+    }
+
+    // 수정
+    @PutMapping("/{id}")
+    public BookResponseDto updateBook(@PathVariable Long id, @RequestBody BookUpdateRequestDto request) {
+        return bookService.updateBook(id, request);
     }
 }

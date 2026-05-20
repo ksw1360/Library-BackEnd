@@ -1,15 +1,18 @@
 package com.example.Library.service;
 
 import com.example.Library.dto.BookResponseDto;
+import com.example.Library.dto.BookUpdateRequestDto;
 import com.example.Library.entity.Book;
 import com.example.Library.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookService {
 
     private final BookRepository bookRepository;
@@ -50,7 +53,6 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-
     // 추가
     public BookResponseDto addBook(Book book) {
         return BookResponseDto.from(bookRepository.save(book));
@@ -62,5 +64,21 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("책을 찾을 수 없습니다"));
         book.setAvailable(true);
         bookRepository.save(book);
+    }
+
+    public BookResponseDto updateBook(Long id, BookUpdateRequestDto request) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("책을 찾을 수 없습니다"));
+
+        // 👇 받은 값으로 필드 갱신 (이게 빠져있었음!)
+        book.setTitle(request.getTitle());
+        book.setAuthor(request.getAuthor());
+        book.setPrice(request.getPrice());
+
+        // @Transactional이 있으면 save() 생략 가능 (dirty checking)
+        // 명시적으로 쓰고 싶다면:
+
+        bookRepository.save(book);
+        return BookResponseDto.from(book);
     }
 }
