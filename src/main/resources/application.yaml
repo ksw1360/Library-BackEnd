@@ -16,3 +16,20 @@ spring:
 
 server:
   port: 5000
+
+# ===== 여기 추가 =====
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never        # DB 다운돼도 UP 뜨게 하려면 never 추천
+      probes:
+        enabled: true
+  health:
+    db:
+      enabled: false             # DB 죽었을 때 헬스체크까지 죽는 거 방지
+    diskspace:
+      enabled: true
